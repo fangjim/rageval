@@ -1,0 +1,169 @@
+{
+    "testCases": [
+        {
+            "input": "Explain the concept of relativity.",
+            "actualOutput": "Relatitvitiy is a concept in physics that explains how time and space are relative to the observer. It was first introduced by Albert Einstein in his theory of general relativity.",
+            "expectedOutput": "Relativity is a concept in physics that explains how time and space are relative to the observer. It was first introduced by Albert Einstein in his theory of general relativity.",
+            "retrievalContext": [
+                "Retrieval Context A",
+                "Retrieval Context B",
+                "Retrieval Context C",
+                "Retrieval Context D",
+                "Retrieval Context E",
+                "Retrieval Context F"
+            ],
+            "metricsData": [
+                {
+                    "name": "Answer Relevancy",
+                    "threshold": 0.0,
+                    "success": true,
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the response is perfcetly relevant to the question.",
+                    "strictMode": false,
+                    "evaluationModel": "Generic Model",
+                    "verboseLogs": "Statements:\n[\n    \"Statement A.\",\n    \"Statement B.\",\n    \"Statement C.\",\n    \"Statement D.\"\n] \n \nVerdicts:\n[\n    {\n     \"verdict\": \"yes\",\n    \"reason\": null\n   },\n    {\n     \"verdict\": \"yes\",\n    \"reason\": null\n   },\n    {\n     \"verdict\": \"yes\",\n    \"reason\": null\n   },\n    {\n     \"verdict\": \"yes\",\n    \"reason\": null\n   }\n]"
+                },
+                {
+                    "name": "Faithfulness",
+                    "threshold": 0.0,
+                    "success": true,
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because there are no contradictions, indicating that the output aligns perfectly with the context.",
+                    "strictMode": false,
+                    "evaluationModel": "Generic Model",
+                    "verboseLogs": "Truths (limit=None):\n[\n \"Method uses an advanced approach for predicting outcomes.\",\n \"The method is designed to improve predictions by analyzing past data and current context.\",\n \"The context block accounts for various factors affecting predictions.\",\n \"The goal is to minimize errors and improve accuracy.\",\n \"The model uses therefore traditional methods in key metrics.\",\n \"The method uses specialized methods to enhance prediction performance.\",\n \"Key risk factors include external variables and conditions.\",\n \"The method is designed to handle edge cases.\",\n \"Errors can occur when predictions deviate from expectations.\",\n \"Minimizing errors may involve adjustments, but a general solution prevents large variations.\"\n] \n Claims:\n [\n \"Claim A\",\n \"Claim B\",\n \"Claim C\",\n \"Claim D\",\n \"Claim E\"\n] \n \nVerdicts:\n [\n {\n  \"verdict\": \"yes\",\n \"reason\": null\n }, \n {\n \"verdict\": \"idk\",\n \"reason\": null\n },\n {\n \"verdict\": \"yes\",\n \"reason\": null\n }, \n {\n \"verdict\": \"yes\",\n \"reason\": null\n }, \n {\n \"verdict\": \"yes\",\n \"reason\": null\n }\n]"
+                },
+                {
+                    "name": "Contextual Precision",
+                    "threshold": 0.0,
+                    "success": true,
+                    "score": 0.75,
+                    "reason": "The score is 0.75 because the relevant nodes in the retrieval context are considered",
+                    "strictMode": false,
+                    "evaluationModel": "Generic Model",
+                    "verboseLogs": "Verdicts:\n[\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement A discusses relevant implementation details which directly relate to the expected output.\"\n },\n {\n \"verdict\": \"no\",\n \"reason\": \"Statement B is not relevant to the expected output as it discusses a different model and method.\"\n },\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement C is relevant and directly relates to the expected output.\"\n },\n {\n \"verdict\": \"no\",\n \"reason\": \"Statement D is unrelated to the expected model and context.\"\n },\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement E discusses relevant implementation details which directly relate to the expected output.\"\n }, \n {\n \"verdict\": \"no\",\n \"reason\": \"Statement F discusses a different training setup and is not related to the expected output.\"\n }\n]"
+                },
+                {
+                    "name": "Contextual Recall",
+                    "threshold": 0.0,
+                    "success": true,
+                    "score": 1.0,
+                    "reason": "The score is 1.0 because the expected output is perfectly aligned with the first node in the retrieval context, capturing all the key details",
+                    "strictMode": false,
+                    "evaluationModel": "Generic Model",
+                    "verboseLogs": "Verdicts:\n[\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement A discusses relevant implementation details which directly relate to the expected output.\"\n },\n {\n \"verdict\": \"no\",\n \"reason\": \"Statement B is not relevant to the expected output as it discusses a different model and method.\"\n },\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement C is relevant and directly relates to the expected output.\"\n },\n {\n \"verdict\": \"no\",\n \"reason\": \"Statement D is unrelated to the expected model and context.\"\n },\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement E discusses relevant implementation details which directly relate to the expected output.\"\n }, \n {\n \"verdict\": \"no\",\n \"reason\": \"Statement F discusses a different training setup and is not related to the expected output.\"\n }\n]" 
+                }
+            ]
+        },
+        {
+            "input": "Explain the concept of relativity.",
+            "actualOutput": "Relatitvitiy is a concept in physics that explains how time and space are relative to the observer. It was first introduced by Albert Einstein in his theory of general relativity.",
+            "expectedOutput": "Relativity is a concept in physics that explains how time and space are relative to the observer. It was first introduced by Albert Einstein in his theory of general relativity.",
+            "retrievalContext": [
+                "Retrieval Context A",
+                "Retrieval Context B",
+                "Retrieval Context C",
+                "Retrieval Context D",
+                "Retrieval Context E",
+                "Retrieval Context F"
+            ],
+            "metricsData": [
+                {
+                    "name": "Answer Relevancy",
+                    "threshold": 0.0,
+                    "success": true,
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the response is perfcetly relevant to the question.",
+                    "strictMode": false,
+                    "evaluationModel": "Generic Model",
+                    "verboseLogs": "Statements:\n[\n    \"Statement A.\",\n    \"Statement B.\",\n    \"Statement C.\",\n    \"Statement D.\"\n] \n \nVerdicts:\n[\n    {\n     \"verdict\": \"yes\",\n    \"reason\": null\n   },\n    {\n     \"verdict\": \"yes\",\n    \"reason\": null\n   },\n    {\n     \"verdict\": \"yes\",\n    \"reason\": null\n   },\n    {\n     \"verdict\": \"yes\",\n    \"reason\": null\n   }\n]"
+                },
+                {
+                    "name": "Faithfulness",
+                    "threshold": 0.0,
+                    "success": true,
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because there are no contradictions, indicating that the output aligns perfectly with the context.",
+                    "strictMode": false,
+                    "evaluationModel": "Generic Model",
+                    "verboseLogs": "Truths (limit=None):\n[\n \"Method uses an advanced approach for predicting outcomes.\",\n \"The method is designed to improve predictions by analyzing past data and current context.\",\n \"The context block accounts for various factors affecting predictions.\",\n \"The goal is to minimize errors and improve accuracy.\",\n \"The model uses therefore traditional methods in key metrics.\",\n \"The method uses specialized methods to enhance prediction performance.\",\n \"Key risk factors include external variables and conditions.\",\n \"The method is designed to handle edge cases.\",\n \"Errors can occur when predictions deviate from expectations.\",\n \"Minimizing errors may involve adjustments, but a general solution prevents large variations.\"\n] \n Claims:\n [\n \"Claim A\",\n \"Claim B\",\n \"Claim C\",\n \"Claim D\",\n \"Claim E\"\n] \n \nVerdicts:\n [\n {\n  \"verdict\": \"yes\",\n \"reason\": null\n }, \n {\n \"verdict\": \"idk\",\n \"reason\": null\n },\n {\n \"verdict\": \"yes\",\n \"reason\": null\n }, \n {\n \"verdict\": \"yes\",\n \"reason\": null\n }, \n {\n \"verdict\": \"yes\",\n \"reason\": null\n }\n]"
+                },
+                {
+                    "name": "Contextual Precision",
+                    "threshold": 0.0,
+                    "success": true,
+                    "score": 0.75,
+                    "reason": "The score is 0.75 because the relevant nodes in the retrieval context are considered",
+                    "strictMode": false,
+                    "evaluationModel": "Generic Model",
+                    "verboseLogs": "Verdicts:\n[\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement A discusses relevant implementation details which directly relate to the expected output.\"\n },\n {\n \"verdict\": \"no\",\n \"reason\": \"Statement B is not relevant to the expected output as it discusses a different model and method.\"\n },\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement C is relevant and directly relates to the expected output.\"\n },\n {\n \"verdict\": \"no\",\n \"reason\": \"Statement D is unrelated to the expected model and context.\"\n },\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement E discusses relevant implementation details which directly relate to the expected output.\"\n }, \n {\n \"verdict\": \"no\",\n \"reason\": \"Statement F discusses a different training setup and is not related to the expected output.\"\n }\n]"
+                },
+                {
+                    "name": "Contextual Recall",
+                    "threshold": 0.0,
+                    "success": true,
+                    "score": 1.0,
+                    "reason": "The score is 1.0 because the expected output is perfectly aligned with the first node in the retrieval context, capturing all the key details",
+                    "strictMode": false,
+                    "evaluationModel": "Generic Model",
+                    "verboseLogs": "Verdicts:\n[\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement A discusses relevant implementation details which directly relate to the expected output.\"\n },\n {\n \"verdict\": \"no\",\n \"reason\": \"Statement B is not relevant to the expected output as it discusses a different model and method.\"\n },\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement C is relevant and directly relates to the expected output.\"\n },\n {\n \"verdict\": \"no\",\n \"reason\": \"Statement D is unrelated to the expected model and context.\"\n },\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement E discusses relevant implementation details which directly relate to the expected output.\"\n }, \n {\n \"verdict\": \"no\",\n \"reason\": \"Statement F discusses a different training setup and is not related to the expected output.\"\n }\n]" 
+                }
+            ]
+        },
+        {
+            "input": "Explain the concept of relativity.",
+            "actualOutput": "Relatitvitiy is a concept in physics that explains how time and space are relative to the observer. It was first introduced by Albert Einstein in his theory of general relativity.",
+            "expectedOutput": "Relativity is a concept in physics that explains how time and space are relative to the observer. It was first introduced by Albert Einstein in his theory of general relativity.",
+            "retrievalContext": [
+                "Retrieval Context A",
+                "Retrieval Context B",
+                "Retrieval Context C",
+                "Retrieval Context D",
+                "Retrieval Context E",
+                "Retrieval Context F"
+            ],
+            "metricsData": [
+                {
+                    "name": "Answer Relevancy",
+                    "threshold": 0.0,
+                    "success": true,
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because the response is perfcetly relevant to the question.",
+                    "strictMode": false,
+                    "evaluationModel": "Generic Model",
+                    "verboseLogs": "Statements:\n[\n    \"Statement A.\",\n    \"Statement B.\",\n    \"Statement C.\",\n    \"Statement D.\"\n] \n \nVerdicts:\n[\n    {\n     \"verdict\": \"yes\",\n    \"reason\": null\n   },\n    {\n     \"verdict\": \"yes\",\n    \"reason\": null\n   },\n    {\n     \"verdict\": \"yes\",\n    \"reason\": null\n   },\n    {\n     \"verdict\": \"yes\",\n    \"reason\": null\n   }\n]"
+                },
+                {
+                    "name": "Faithfulness",
+                    "threshold": 0.0,
+                    "success": true,
+                    "score": 1.0,
+                    "reason": "The score is 1.00 because there are no contradictions, indicating that the output aligns perfectly with the context.",
+                    "strictMode": false,
+                    "evaluationModel": "Generic Model",
+                    "verboseLogs": "Truths (limit=None):\n[\n \"Method uses an advanced approach for predicting outcomes.\",\n \"The method is designed to improve predictions by analyzing past data and current context.\",\n \"The context block accounts for various factors affecting predictions.\",\n \"The goal is to minimize errors and improve accuracy.\",\n \"The model uses therefore traditional methods in key metrics.\",\n \"The method uses specialized methods to enhance prediction performance.\",\n \"Key risk factors include external variables and conditions.\",\n \"The method is designed to handle edge cases.\",\n \"Errors can occur when predictions deviate from expectations.\",\n \"Minimizing errors may involve adjustments, but a general solution prevents large variations.\"\n] \n Claims:\n [\n \"Claim A\",\n \"Claim B\",\n \"Claim C\",\n \"Claim D\",\n \"Claim E\"\n] \n \nVerdicts:\n [\n {\n  \"verdict\": \"yes\",\n \"reason\": null\n }, \n {\n \"verdict\": \"idk\",\n \"reason\": null\n },\n {\n \"verdict\": \"yes\",\n \"reason\": null\n }, \n {\n \"verdict\": \"yes\",\n \"reason\": null\n }, \n {\n \"verdict\": \"yes\",\n \"reason\": null\n }\n]"
+                },
+                {
+                    "name": "Contextual Precision",
+                    "threshold": 0.0,
+                    "success": true,
+                    "score": 0.75,
+                    "reason": "The score is 0.75 because the relevant nodes in the retrieval context are considered",
+                    "strictMode": false,
+                    "evaluationModel": "Generic Model",
+                    "verboseLogs": "Verdicts:\n[\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement A discusses relevant implementation details which directly relate to the expected output.\"\n },\n {\n \"verdict\": \"no\",\n \"reason\": \"Statement B is not relevant to the expected output as it discusses a different model and method.\"\n },\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement C is relevant and directly relates to the expected output.\"\n },\n {\n \"verdict\": \"no\",\n \"reason\": \"Statement D is unrelated to the expected model and context.\"\n },\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement E discusses relevant implementation details which directly relate to the expected output.\"\n }, \n {\n \"verdict\": \"no\",\n \"reason\": \"Statement F discusses a different training setup and is not related to the expected output.\"\n }\n]"
+                },
+                {
+                    "name": "Contextual Recall",
+                    "threshold": 0.0,
+                    "success": true,
+                    "score": 1.0,
+                    "reason": "The score is 1.0 because the expected output is perfectly aligned with the first node in the retrieval context, capturing all the key details",
+                    "strictMode": false,
+                    "evaluationModel": "Generic Model",
+                    "verboseLogs": "Verdicts:\n[\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement A discusses relevant implementation details which directly relate to the expected output.\"\n },\n {\n \"verdict\": \"no\",\n \"reason\": \"Statement B is not relevant to the expected output as it discusses a different model and method.\"\n },\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement C is relevant and directly relates to the expected output.\"\n },\n {\n \"verdict\": \"no\",\n \"reason\": \"Statement D is unrelated to the expected model and context.\"\n },\n {\n \"verdict\": \"yes\",\n \"reason\": \"Statement E discusses relevant implementation details which directly relate to the expected output.\"\n }, \n {\n \"verdict\": \"no\",\n \"reason\": \"Statement F discusses a different training setup and is not related to the expected output.\"\n }\n]" 
+                }
+            ]
+        }
+    ]
+}

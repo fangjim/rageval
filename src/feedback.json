@@ -1,0 +1,11 @@
+{
+  "case_0_Answer Relevancy": true,
+  "case_0_Faithfulness": true,
+  "case_0_Contextual Precision": true,
+  "case_1_Faithfulness": false,
+  "case_1_Answer Relevancy": false,
+  "case_1_Contextual Precision": false,
+  "case_0_Answer Relevancy_statement_0": true,
+  "case_1_Faithfulness_claim_0": true,
+  "case_1_Answer Relevancy_statement_0": true
+}
