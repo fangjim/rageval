@@ -62,6 +62,7 @@ def parse_verbose_logs(logs_str):
 
 app.jinja_env.filters['parse_verbose_logs'] = parse_verbose_logs
 
+
 def load_test_cases():
     test_cases_path = Path(__file__).parent / "test_cases.json"  # Use relative path
     if test_cases_path.exists():
@@ -147,6 +148,38 @@ def get_samples():
     test_cases = load_test_cases()
     sampled_cases = sample_test_cases(test_cases, samples_per_interval)
     return render_template("index.html", test_cases=sampled_cases)
+
+@app.route("/get_distributions")
+def get_distributions():
+    test_cases = load_test_cases()
+    metrics_scores = {
+        "Faithfulness": [],
+        "Answer Relevancy": [],
+        "Contextual Precision": [],
+        "Contextual Recall": []
+    }
+    
+    # Collect all scores for each metric
+    for test_case in test_cases:
+        for metric in test_case['metricsData']:
+            metric_name = metric['name']
+            if metric_name in metrics_scores:
+                metrics_scores[metric_name].append(metric['score'])
+    
+    # Calculate distributions
+    distributions = {}
+    score_intervals = np.arange(0, 1.2, 0.2)
+    
+    for metric, scores in metrics_scores.items():
+        distribution = []
+        for i in range(len(score_intervals) - 1):
+            lower_bound = score_intervals[i]
+            upper_bound = score_intervals[i + 1]
+            count = len([s for s in scores if lower_bound <= s < upper_bound])
+            distribution.append(count)
+        distributions[metric] = distribution
+    
+    return jsonify(distributions)
 
 @app.route("/submit_feedback", methods=["POST"])
 def submit_feedback():
