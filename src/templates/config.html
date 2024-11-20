@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Case Sampling Configuration</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div id="root"></div>
+    
+    <script type="text/babel" src="{{ url_for('static', filename='js/samplingconfiguration.js') }}"></script>
+    <script type="text/babel">
+        // Render after the component is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            ReactDOM.render(
+                <SamplingConfiguration />,
+                document.getElementById('root')
+            );
+        });
+    </script>
+</body>
+</html>
