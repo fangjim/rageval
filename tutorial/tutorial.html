@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Case Evaluation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Test Case Evaluation Interface</h1>
+        </header>
+
+        <section class="introduction">
+            <h2>Introduction</h2>
+            <p>Welcome to the Test Case Evaluation Interface. This tool allows you to assess the performance of a language model (LM) on a set of test cases. The interface provides detailed metrics and analysis to help you understand the LM's strengths and weaknesses.</p>
+        </section>
+
+        <section class="metrics-overview">
+            <h2>Metrics Overview</h2>
+            <div class="metric-card">
+                <h3>Answer Relevancy</h3>
+                <p>This metric measures how relevant the LM's response is to the input question. It is calculated as the ratio of the number of relevant statements to the total number of statements:</p>
+                <div class="math-formula">
+                    <span class="metric-name">Answer Relevancy</span> = <span class="fraction">
+                        <span class="numerator">Number of Relevant Statements</span>
+                        <span class="denominator">Total Number of Statements</span>
+                    </span>
+                </div>
+            </div>
+            <div class="metric-card">
+                <h3>Faithfulness</h3>
+                <p>This metric evaluates how truthful the LM's claims are, based on the provided retrieval context. It is calculated as the ratio of the number of truthful claims to the total number of claims:</p>
+                <div class="math-formula">
+                    <span class="metric-name">Faithfulness</span> = <span class="fraction">
+                        <span class="numerator">Number of Truthful Claims</span>
+                        <span class="denominator">Total Number of Claims</span>
+                    </span>
+                </div>
+            </div>
+            <div class="metric-card">
+                <h3>Contextual Precision</h3>
+                <p>This metric assesses the LM's ability to retrieve and rank the most relevant information from the retrieval context. It is calculated using a weighted cumulative precision formula that emphasizes the relevance of the top-ranked retrieval context nodes.</p>
+            </div>
+            <div class="metric-card">
+                <h3>Contextual Recall</h3>
+                <p>This metric measures the LM's ability to capture all relevant information from the retrieval context. It is calculated as the ratio of the number of statements in the expected output that can be attributed to the retrieval context to the total number of statements in the expected output:</p>
+                <div class="math-formula">
+                    <span class="metric-name">Contextual Recall</span> = <span class="fraction">
+                        <span class="numerator">Number of Attributable Statements</span>
+                        <span class="denominator">Total Number of Statements</span>
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <section class="interface-interaction">
+            <h2>Interacting with the Interface</h2>
+            <p>The interface displays a list of test cases, each with information about the input, actual output, expected output, retrieval context, and metrics. To provide feedback on the LM's performance:</p>
+            <ol>
+                <li>Click the "Show Details" button for the metric you'd like to review.</li>
+                <li>Examine the detailed analysis, which may include statements, claims, and verdicts made by the LLM.</li>
+                <li>If you agree with the LLM's verdict, click the "Agree" button. If you disagree, click the "Disagree" button.</li>
+                <li>Your feedback will be saved and can be used to further improve the LM's performance.</li>
+            </ol>
+            <div class="example-verdict">
+                <h3>Example Verdict</h3>
+                <div class="verdict-item">
+                    <div class="statement">Statement: The method uses an advanced approach for predicting outcomes.</div>
+                    <div class="verdict">
+                        <div>Verdict: yes</div>
+                        <div class="verdict-status">✓ Accepted</div>
+                    </div>
+                    <div class="feedback-buttons">
+                        <button class="agree">Agree with Verdict</button>
+                        <button class="disagree">Disagree with Verdict</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="design-considerations">
+            <h2>Result Explanation</h2>
+            <p>Three explanations</p>
+            <ul>
+                <li>Clean and consistent layout with clear section headers</li>
+                <li>Use of cards, tables, and other UI components to present information</li>
+                <li>Intuitive buttons and controls for providing feedback</li>
+                <li>Responsive design to work well on different screen sizes</li>
+            </ul>
+            <p>The goal is to make the process of reviewing and providing feedback on the LM's performance as seamless and enjoyable as possible.</p>
+        </section>
+    </div>
+</body>
+</html>
