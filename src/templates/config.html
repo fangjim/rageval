@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Case Sampling Configuration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            height: 200px;
+            gap: 8px;
+            padding: 24px 0;
+        }
+
+        .bar {
+            flex: 1;
+            background-color: #4299E1;
+            transition: height 0.3s ease;
+            position: relative;
+            min-width: 32px;
+            border-radius: 4px;
+        }
+
+        .bar-label {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #4A5568;
+        }
+
+        .bar-value {
+            position: absolute;
+            bottom: -24px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-45deg);
+            font-size: 14px;
+            color: #4A5568;
+            width: max-content;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #2D3748;
+        }
+
+        input[type="number"] {
+            width: 80px;
+            padding: 8px 12px;
+            border: 1px solid #CBD5E0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #2D3748;
+            background-color: #F7FAFC;
+        }
+
+        .interval-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .interval-buttons button {
+            padding: 8px 16px;
+            background-color: #E2E8F0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            color: #4A5568;
+            transition: background-color 0.2s ease;
+        }
+
+        .interval-buttons button.active {
+            background-color: #4299E1;
+            color: white;
+        }
+
+        .interval-buttons button:hover:not(.active) {
+            background-color: #CBD5E0;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .metrics-grid > div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .metrics-grid .indicator {
+            width: 16px;
+            height: 16px;
+            background-color: #E2E8F0;
+            border: 1px solid #CBD5E0;
+            border-radius: 4px;
+        }
+
+        .generate-samples {
+            background-color: #4299E1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .generate-samples:hover {
+            background-color: #2B6CB0;
+        }
+
+        .score-distributions {
+            margin-top: 40px;
+        }
+
+        .score-distributions h2 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2D3748;
+            margin-bottom: 24px;
+        }
+
+        .score-distributions h3 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4A5568;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="font-size: 24px; font-weight: bold; color: #2D3748; margin-bottom: 24px;">Test Case Sampling Configuration</h1>
+
+        <div class="form-group">
+            <label for="json-file">Select Test Case File</label>
+            <select id="json-file" style="width: 100%; padding: 8px 12px; border: 1px solid #CBD5E0; border-radius: 6px; font-size: 14px; color: #2D3748; background-color: #F7FAFC;">
+                <option value="">Select a file</option>
+                <option value="test_cases_1.json">Test Cases 1</option>
+                <option value="test_cases_2.json">Test Cases 2</option>
+                <option value="test_cases_3.json">Test Cases 3</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="samples-per-interval">Samples per Score Interval</label>
+            <input type="number" id="samples-per-interval" min="1" max="10" value="1" style="width: 100%; padding: 8px 12px; border: 1px solid #CBD5E0; border-radius: 6px; font-size: 14px; color: #2D3748; background-color: #F7FAFC;">
+        </div>
+
+        <div class="form-group">
+            <label>Score Intervals</label>
+            <div class="interval-buttons">
+                <button class="interval-button" data-size="0.5">0.5</button>
+                <button class="interval-button" data-size="0.25">0.25</button>
+                <button class="interval-button" data-size="0.2">0.2</button>
+                <button class="interval-button" data-size="0.1">0.1</button>
+            </div>
+            <div class="intervals-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Metrics</label>
+            <div class="metrics-grid">
+                <div>
+                    <div class="indicator"></div>
+                    <span style="color: #4A5568;">Faithfulness</span>
+                </div>
+                <div>
+                    <div class="indicator"></div>
+                    <span style="color: #4A5568;">Answer Relevancy</span>
+                </div>
+                <div>
+                    <div class="indicator"></div>
+                    <span style="color: #4A5568;">Contextual Precision</span>
+                </div>
+                <div>
+                    <div class="indicator"></div>
+                    <span style="color: #4A5568;">Contextual Recall</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="generate-samples">Generate Samples</button>
+
+        <div class="score-distributions">
+            <h2>Score Distributions</h2>
+            <div class="metrics-grid">
+                <div>
+                    <h3>Faithfulness Distribution</h3>
+                    <div class="bar-chart" id="faithfulness-distribution"></div>
+                </div>
+                <div>
+                    <h3>Answer Relevancy Distribution</h3>
+                    <div class="bar-chart" id="answer-relevancy-distribution"></div>
+                </div>
+                <div>
+                    <h3>Contextual Precision Distribution</h3>
+                    <div class="bar-chart" id="contextual-precision-distribution"></div>
+                </div>
+                <div>
+                    <h3>Contextual Recall Distribution</h3>
+                    <div class="bar-chart" id="contextual-recall-distribution"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Helper function to create elements
+        function createElement(tag, attributes, text) {
+            const element = document.createElement(tag);
+            for (let key in attributes) {
+                element.setAttribute(key, attributes[key]);
+            }
+            if (text) {
+                element.textContent = text;
+            }
+            return element;
+        }
+
+        // Helper function to calculate bar height
+        function calculateBarHeight(value, maxValue) {
+            return (value / maxValue) * 100;
+        }
+
+        // Helper function to update the bar chart
+        function updateBarChart(chartId, data, maxValue) {
+            const chartContainer = document.getElementById(chartId);
+            chartContainer.innerHTML = '';
+
+            data.forEach((value, index) => {
+                const bar = createElement('div', { 'class': 'bar' });
+                bar.style.height = `${calculateBarHeight(value, maxValue)}%`;
+
+                const barLabel = createElement('span', { 'class': 'bar-label' }, value);
+                const barValue = createElement('span', { 'class': 'bar-value' }, `${(index * 0.2).toFixed(1)}-${((index + 1) * 0.2).toFixed(1)}`);
+
+                bar.appendChild(barLabel);
+                bar.appendChild(barValue);
+                chartContainer.appendChild(bar);
+            });
+        }
+
+        // Helper function to update the intervals
+        function updateIntervals(intervalSize) {
+            const intervalsContainer = document.querySelector('.intervals-container');
+            intervalsContainer.innerHTML = '';
+
+            const numIntervals = 1 / intervalSize;
+            for (let i = 0; i < numIntervals; i++) {
+                const lowerBound = (i * intervalSize).toFixed(1);
+                const upperBound = ((i + 1) * intervalSize).toFixed(1);
+                const interval = createElement('div', { 'class': 'interval-item', 'style': 'background-color: #F7FAFC; padding: 8px 12px; border: 1px solid #CBD5E0; border-radius: 6px; font-size: 14px; color: #4A5568;' }, `${lowerBound} - ${upperBound}`);
+                intervalsContainer.appendChild(interval);
+            }
+        }
+
+        // Handle interval size button clicks
+        const intervalButtons = document.querySelectorAll('.interval-button');
+        intervalButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const intervalSize = parseFloat(button.dataset.size);
+                updateIntervals(intervalSize);
+
+                // Remove active class from all buttons, then add it to the clicked button
+                intervalButtons.forEach((btn) => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
+
+        // Handle file selection
+        const fileSelect = document.getElementById('json-file');
+        fileSelect.addEventListener('change', () => {
+            const selectedFile = fileSelect.value;
+            // Here, you would make a fetch request to the server to get the distributions for the selected file
+            // and update the bar charts accordingly
+            console.log('Selected file:', selectedFile);
+        });
+
+        // Handle sample generation
+        const generateSamplesButton = document.querySelector('.generate-samples');
+        generateSamplesButton.addEventListener('click', () => {
+            const samplesPerInterval = document.getElementById('samples-per-interval').value;
+            const intervalSize = parseFloat(document.querySelector('.interval-button.active').dataset.size);
+            const selectedFile = document.getElementById('json-file').value;
+
+            // Here, you would make a fetch request to the server to generate the samples
+            // and update the page with the generated samples
+            console.log('Generating samples:', { samplesPerInterval, intervalSize, selectedFile });
+        });
+
+        // Hardcoded sample data for the bar charts
+        const distributions = {
+            Faithfulness: [100, 80, 60, 40, 20],
+            'Answer Relevancy': [90, 75, 65, 50, 30],
+            'Contextual Precision': [85, 70, 55, 45, 25],
+            'Contextual Recall': [92, 78, 62, 48, 28]
+        };
+
+        const maxValue = Math.max(...Object.values(distributions).flatMap(arr => arr));
+
+        // Update the bar charts
+        updateBarChart('faithfulness-distribution', distributions['Faithfulness'], maxValue);
+        updateBarChart('answer-relevancy-distribution', distributions['Answer Relevancy'], maxValue);
+        updateBarChart('contextual-precision-distribution', distributions['Contextual Precision'], maxValue);
+        updateBarChart('contextual-recall-distribution', distributions['Contextual Recall'], maxValue);
+
+        // Initialize the intervals
+        updateIntervals(0.2);
+        document.querySelector('.interval-button[data-size="0.2"]').classList.add('active');
+    </script>
+</body>
+</html>
