@@ -4,6 +4,8 @@ from pathlib import Path
 import re
 import numpy as np
 import pandas as pd
+from datetime import datetime  # Add this at the top of app.py
+import random
 
 app = Flask(__name__, 
     static_folder='static',
@@ -15,49 +17,64 @@ def tojson_filter(s):
 
 def parse_verbose_logs(logs_str):
     """Parse the verbose logs string into structured data."""
+    if not logs_str:
+        return {'statements': [], 'claims': [], 'verdicts': []}
+    
+    print(f"Raw logs: {logs_str}")
     data = {}
     
-    # Extract statements
-    statements_match = re.search(r'Statements:\s*\[(.*?)\]', logs_str, re.DOTALL)
-    if statements_match:
-        statements = re.findall(r'"([^"]*)"', statements_match.group(1))
-        data['statements'] = [s.strip() for s in statements if s.strip()]
+    # Initialize empty lists
+    data['statements'] = []
+    data['claims'] = []
+    data['verdicts'] = []
 
-    # Extract truths
-    truths_match = re.search(r'Truths.*?:\s*\[(.*?)\]', logs_str, re.DOTALL)
-    if truths_match:
-        truths = re.findall(r'"([^"]*)"', truths_match.group(1))
-        data['truths'] = [t.strip() for t in truths if t.strip()]
-
-    # Extract claims
-    claims_match = re.search(r'Claims:\s*\[(.*?)\]', logs_str, re.DOTALL)
-    if claims_match:
-        claims = re.findall(r'"([^"]*)"', claims_match.group(1))
-        data['claims'] = [c.strip() for c in claims if c.strip()]
-
-    # Extract verdicts
-    verdicts_match = re.search(r'Verdicts:\s*\[(.*?)\](?:\s*$|\s*\n)', logs_str, re.DOTALL)
-    if verdicts_match:
-        verdicts_str = verdicts_match.group(1)
-        verdicts = []
-        verdict_pattern = r'{\s*"verdict":\s*"([^"]+)"(?:\s*,\s*"reason":\s*([^}]+))?\s*}'
-        
-        for match in re.finditer(verdict_pattern, verdicts_str):
-            verdict = match.group(1)
-            reason = match.group(2)
+    try:
+        # Extract statements with more precise pattern matching
+        if "Statements:" in logs_str:
+            statements_section = logs_str.split("Statements:")[1].split("]")[0] + "]"
+            statements_section = statements_section.replace("\n", "").strip()
+            print(f"Statements section: {statements_section}")  # Debug print
             
-            if reason:
-                reason = reason.strip('"')
-                if reason.lower() == 'null':
+            # Extract strings between quotes
+            statements_matches = re.findall(r'"([^"]+)"', statements_section)
+            if statements_matches:
+                data['statements'] = [s.strip() for s in statements_matches if s.strip()]
+                print(f"Found statements: {data['statements']}")
+
+        # Extract claims
+        if "Claims:" in logs_str:
+            claims_section = logs_str.split("Claims:")[1].split("Verdicts:")[0]
+            claims_section = claims_section.replace("\n", "").strip()
+            claims_matches = re.findall(r'"([^"]+)"', claims_section)
+            if claims_matches:
+                data['claims'] = [c.strip() for c in claims_matches if c.strip()]
+                print(f"Found claims: {data['claims']}")
+
+        # Extract verdicts with more precise pattern
+        if "Verdicts:" in logs_str:
+            verdicts_section = logs_str.split("Verdicts:")[1].strip()
+            verdict_pattern = r'{\s*"verdict":\s*"([^"]+)"(?:\s*,\s*"reason":\s*"?([^"}]+)"?)?\s*}'
+            verdict_matches = re.finditer(verdict_pattern, verdicts_section)
+            
+            for match in verdict_matches:
+                verdict = match.group(1).strip()
+                reason = match.group(2).strip('"') if match.group(2) else None
+                
+                if reason and reason.lower() == 'null':
                     reason = None
-            
-            verdicts.append({
-                'verdict': verdict.strip(),
-                'reason': reason
-            })
-            
-        data['verdicts'] = verdicts
+                
+                data['verdicts'].append({
+                    'verdict': verdict,
+                    'reason': reason
+                })
+            print(f"Found verdicts: {data['verdicts']}")
 
+    except Exception as e:
+        print(f"Error parsing logs: {str(e)}")
+        import traceback
+        traceback.print_exc()
+    
+    print("Final parsed data:", data)
     return data
 
 app.jinja_env.filters['parse_verbose_logs'] = parse_verbose_logs
@@ -137,71 +154,155 @@ def sample_test_cases(test_cases, samples_per_interval):
             unique_cases.append(case)
     
     return unique_cases
-
 @app.route("/")
 def index():
-    return render_template("config.html")
-
-@app.route("/get_samples", methods=["POST"])
-def get_samples():
-    samples_per_interval = request.json.get('samplesPerInterval', 1)
     test_cases = load_test_cases()
-    sampled_cases = sample_test_cases(test_cases, samples_per_interval)
-    return render_template("index.html", test_cases=sampled_cases)
+    
+    # Define all possible intervals
+    score_intervals = [(i/5, (i+1)/5) for i in range(5)]  # 0.0-0.2, 0.2-0.4, etc.
+    
+    # Define all metrics
+    metrics = ["Faithfulness", "Answer Relevancy", "Contextual Precision", "Contextual Recall"]
+    
+    # Initialize samples_by_metric with all intervals
+    samples_by_metric = {metric: {} for metric in metrics}
+    for metric in metrics:
+        for lower, upper in score_intervals:
+            interval_label = f"{lower:.1f} - {upper:.1f}"
+            samples_by_metric[metric][interval_label] = []
 
-@app.route("/get_distributions")
-def get_distributions():
-    test_cases = load_test_cases()
-    metrics_scores = {
-        "Faithfulness": [],
-        "Answer Relevancy": [],
-        "Contextual Precision": [],
-        "Contextual Recall": []
+    # Process test cases
+    for test_case in test_cases:
+        for metric_data in test_case['metricsData']:
+            metric_name = metric_data['name']
+            if metric_name not in metrics:
+                continue
+                
+            score = metric_data['score']
+            
+            # Find appropriate interval
+            for lower, upper in score_intervals:
+                if lower <= score < upper:
+                    interval_label = f"{lower:.1f} - {upper:.1f}"
+                    case_data = {
+                        'input': test_case['input'],
+                        'actualOutput': test_case.get('actualOutput', 'N/A'),
+                        'expectedOutput': test_case.get('expectedOutput', 'N/A'),
+                        'retrievalContext': test_case.get('retrievalContext', []),
+                        'metric': metric_data
+                    }
+                    samples_by_metric[metric_name][interval_label].append(case_data)
+                    break
+
+    # Sample down to 1 per interval
+    for metric in samples_by_metric:
+        for interval in samples_by_metric[metric]:
+            if len(samples_by_metric[metric][interval]) > 1:
+                samples_by_metric[metric][interval] = random.sample(
+                    samples_by_metric[metric][interval], 1
+                )
+
+    return render_template("index.html", samples_by_metric=samples_by_metric)
+
+@app.route("/get_feedback_stats")
+def get_feedback_stats():
+    feedback_path = Path("feedback.json")
+    default_stats = {
+        'overall': {'agrees': 0, 'disagrees': 0},
+        'by_metric': {},
+        'by_interval': {}
     }
     
-    # Collect all scores for each metric
-    for test_case in test_cases:
-        for metric in test_case['metricsData']:
-            metric_name = metric['name']
-            if metric_name in metrics_scores:
-                metrics_scores[metric_name].append(metric['score'])
-    
-    # Calculate distributions
-    distributions = {}
-    score_intervals = np.arange(0, 1.2, 0.2)
-    
-    for metric, scores in metrics_scores.items():
-        distribution = []
-        for i in range(len(score_intervals) - 1):
-            lower_bound = score_intervals[i]
-            upper_bound = score_intervals[i + 1]
-            count = len([s for s in scores if lower_bound <= s < upper_bound])
-            distribution.append(count)
-        distributions[metric] = distribution
-    
-    return jsonify(distributions)
+    if not feedback_path.exists():
+        return jsonify(default_stats)
+        
+    try:
+        with open(feedback_path, 'r') as f:
+            feedback = json.load(f)
+            return jsonify(feedback.get('statistics', default_stats))
+    except Exception as e:
+        print(f"Error reading feedback file: {e}")
+        return jsonify(default_stats)
 
 @app.route("/submit_feedback", methods=["POST"])
 def submit_feedback():
     data = request.json
-    case_index = data["caseIndex"]
     metric_name = data["metricName"]
-    item_id = data.get("itemId", "overall")
+    interval = data["interval"]
+    case_index = data["caseIndex"]
+    item_id = data["itemId"]
     agreement = data["agreement"]
     
     feedback_path = Path("feedback.json")
-    feedback = {}
+    feedback = {
+        'verdicts': [],
+        'statistics': {
+            'overall': {'agrees': 0, 'disagrees': 0},
+            'by_metric': {},
+            'by_interval': {}
+        }
+    }
+    
     if feedback_path.exists():
-        with open(feedback_path, "r") as f:
-            feedback = json.load(f)
+        try:
+            with open(feedback_path, 'r') as f:
+                feedback = json.load(f)
+        except Exception as e:
+            print(f"Error reading feedback file: {e}")
+
+    stats = feedback['statistics']
     
-    key = f"case_{case_index}_{metric_name}_{item_id}"
-    feedback[key] = agreement
+    # Ensure structures exist
+    if 'overall' not in stats:
+        stats['overall'] = {'agrees': 0, 'disagrees': 0}
+    if 'by_metric' not in stats:
+        stats['by_metric'] = {}
+    if 'by_interval' not in stats:
+        stats['by_interval'] = {}
     
-    with open(feedback_path, "w") as f:
-        json.dump(feedback, f, indent=2)
+    # Initialize metric stats if needed
+    if metric_name not in stats['by_metric']:
+        stats['by_metric'][metric_name] = {'agrees': 0, 'disagrees': 0}
+        
+    # Initialize interval stats if needed
+    if interval not in stats['by_interval']:
+        stats['by_interval'][interval] = {'agrees': 0, 'disagrees': 0}
+
+    # Add new verdict
+    verdict = {
+        'metric': metric_name,
+        'interval': interval,
+        'case_index': case_index,
+        'item_id': item_id,
+        'agreement': agreement,
+        'timestamp': datetime.now().isoformat()
+    }
     
-    return jsonify({"status": "success"})
+    if 'verdicts' not in feedback:
+        feedback['verdicts'] = []
+    feedback['verdicts'].append(verdict)
+    
+    # Update statistics
+    if agreement:
+        stats['overall']['agrees'] += 1
+        stats['by_metric'][metric_name]['agrees'] += 1
+        stats['by_interval'][interval]['agrees'] += 1
+    else:
+        stats['overall']['disagrees'] += 1
+        stats['by_metric'][metric_name]['disagrees'] += 1
+        stats['by_interval'][interval]['disagrees'] += 1
+    
+    try:
+        with open(feedback_path, 'w') as f:
+            json.dump(feedback, f, indent=2)
+    except Exception as e:
+        print(f"Error writing feedback file: {e}")
+        return jsonify({"status": "error", "message": str(e)})
+    
+    return jsonify({
+        "status": "success",
+        "statistics": stats
+    })
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
